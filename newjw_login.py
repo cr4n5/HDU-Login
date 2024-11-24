@@ -43,7 +43,12 @@ def login(session):
         "mm":mm,
     }
     response=session.post(url,data=data)
-    return session
+    if "用户登录" in response.text:
+        print("登录失败,请检查用户名和密码")
+        exit()
+    else:
+        print("登陆成功")
+        return session
 
 if __name__ == "__main__":
     kc_url="https://newjw.hdu.edu.cn/jwglxt/rwlscx/rwlscx_cxRwlsIndex.html?doType=query&gnmkdm=N1548"
