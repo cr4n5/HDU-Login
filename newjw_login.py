@@ -21,7 +21,7 @@ def encrypt(plain,n):
         print(f"Encryption error: {e}")
         return None
 
-def login(session):
+def login(session : requests.Session) -> requests.Session:
 
     # 读取配置文件
     try:

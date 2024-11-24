@@ -4,3 +4,5 @@
 
 cas认证登陆
 newjw登录
+
+配置文件名称为config.json
