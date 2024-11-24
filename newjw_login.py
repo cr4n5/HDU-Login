@@ -29,10 +29,10 @@ def login(session : requests.Session) -> requests.Session:
             config = json.load(f)
     except FileNotFoundError:
         print("Error: config.json file not found.")
-        return
+        return None
     except json.JSONDecodeError:
         print("Error: Failed to decode JSON from config.json.")
-        return
+        return None
     
     # 登录session配置
     url="https://newjw.hdu.edu.cn/jwglxt/xtgl/login_slogin.html"
@@ -49,7 +49,7 @@ def login(session : requests.Session) -> requests.Session:
         response.raise_for_status()
     except requests.RequestException as e:
         print(f"HTTP request error: {e}")
-        return
+        return None
     
     # 解析csrftoken
     try:
@@ -57,7 +57,7 @@ def login(session : requests.Session) -> requests.Session:
         csrftoken = tree.xpath('//input[@name="csrftoken"]/@value')[0]
     except IndexError:
         print("Error: CSRF token not found.")
-        return
+        return None
     
     # 获取公钥
     pubkey_url = "https://newjw.hdu.edu.cn/jwglxt/xtgl/login_getPublicKey.html?time={}".format(int(time.time()))
@@ -68,17 +68,17 @@ def login(session : requests.Session) -> requests.Session:
         n = pubkey["modulus"]
     except requests.RequestException as e:
         print(f"HTTP request error: {e}")
-        return
+        return None
     except KeyError:
         print("Error: Public key not found in response.")
-        return
+        return None
     
     # 加密密码
     password=config["login"]["password"]
     mm=encrypt(password,n)
     if mm is None:
         print("Error: Password encryption failed.")
-        return
+        return None
     yhm=config["login"]["username"]
     data={
         "csrftoken":csrftoken,
@@ -92,11 +92,11 @@ def login(session : requests.Session) -> requests.Session:
         response.raise_for_status()
     except requests.RequestException as e:
         print(f"HTTP request error: {e}")
-        return
+        return None
     
     if "用户登录" in response.text:
         print("登录失败,请检查用户名和密码")
-        return
+        return None
     else:
         print("登陆成功")
         return session
