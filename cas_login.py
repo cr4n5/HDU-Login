@@ -19,6 +19,7 @@ def encrypt(key, plain):
 
 def login(session):
 
+    print("开始登录...")
     # 读取配置文件
     try:
         with open("config.json","r") as f:
@@ -35,6 +36,7 @@ def login(session):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18363",
     })
 
+    print("正在获取参数...")
     # 获取参数
     try:
         url="https://sso.hdu.edu.cn/login"
@@ -56,6 +58,7 @@ def login(session):
         'execution': execution, 
         'captcha_code': '', 'croypto': croypto, 'password': password}
 
+    print("正在登录...")
     # 登录
     try:
         response=session.post(url,data=data)
@@ -66,6 +69,7 @@ def login(session):
             print("登录失败,请检查用户名和密码")
         return None
     
+    print("登录成功")
     return session
 
 

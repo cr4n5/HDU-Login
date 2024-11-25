@@ -23,6 +23,7 @@ def encrypt(plain,n):
 
 def login(session : requests.Session) -> requests.Session:
 
+    print("开始登录...")
     # 读取配置文件
     try:
         with open("config.json", "r") as f:
@@ -43,6 +44,7 @@ def login(session : requests.Session) -> requests.Session:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18363",
     })
 
+    print("正在获取csrftoken...")
     # 获取csrftoken
     try:
         response = session.get(url)
@@ -59,6 +61,7 @@ def login(session : requests.Session) -> requests.Session:
         print("Error: CSRF token not found.")
         return None
     
+    print("正在获取公钥...")
     # 获取公钥
     pubkey_url = "https://newjw.hdu.edu.cn/jwglxt/xtgl/login_getPublicKey.html?time={}".format(int(time.time()))
     try:
@@ -86,6 +89,7 @@ def login(session : requests.Session) -> requests.Session:
         "mm":mm,
     }
 
+    print("正在登录...")
     # 登录
     try:
         response = session.post(url, data=data)
